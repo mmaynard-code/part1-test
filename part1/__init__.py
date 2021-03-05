@@ -24,7 +24,7 @@ class Constants(BaseConstants):
          "Kale", "Lysithea", "Metis", "Nereid", "Orthosie", "Pasiphae", "Rhea", "Sinope", "Thyone", "Umbriel"])
 
     # Used to control the start of rating sharings
-    round_share_start = 6
+    round_share_start = 4
 
     # Payoff values
     betray_payoff = c(6)
@@ -552,6 +552,7 @@ class Decision(Page):
 
 
 class ResultsWaitPage(WaitPage):
+    wait_for_all_groups = True
     # Calculates payoff, uses timeout_happened check from previous page
     after_all_players_arrive = 'set_payoffs'
 
