@@ -18,6 +18,7 @@ class Constants(BaseConstants):
     name_in_url = 'part1'
     players_per_group = 4
     num_rounds = 10
+    timeout_time = 23
     random_names = tuple(
         ["Amalthea", "Bestla", "Chaldene", "Daphnis", "Elara", "Fabauti", "Galatea", "Halimede", "Iocaste", "Jarnsaxa",
          "Kale", "Lysithea", "Metis", "Nereid", "Orthosie", "Pasiphae", "Rhea", "Sinope", "Thyone", "Umbriel"])
@@ -407,14 +408,14 @@ def set_received_rating(player: Player):
 
 
 class Introduction(Page):
-    timeout_seconds = 100
+    timeout_seconds = 120
 
     def is_displayed(self):
         return self.round_number == 1
 
 
 class Decision(Page):
-    timeout_seconds = 23
+    timeout_seconds = 30
     form_model = 'player'
     form_fields = ['decision1', 'decision2']
 
@@ -556,7 +557,7 @@ class ResultsWaitPage(WaitPage):
 
 
 class Results(Page):
-    timeout_seconds = 23
+    timeout_seconds = 60
     form_model = 'player'
     form_fields = ['my_ratings', 'shared_ratings']
     def vars_for_template(player: Player):
