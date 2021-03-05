@@ -8,11 +8,11 @@
     <p>
         Your randomly assigned name is <b>{{ player.participant.label}}</b>.
     </p>
-    {% if me_timed_out == '11' %}
+    {% if me_timed_out == 'd' %}
         <p>
             You timed out without making any decisions.
         </p>
-    {% elif me_timed_out == '10' %}
+    {% elif me_timed_out == 'b' %}
         <p>
             You timed out, but made one decision.
         </p>
@@ -23,7 +23,7 @@
                 You chose {{ my_decision1 }} and <b>{{ opponent1_label }}</b> chose {{ opponent1_decision }}.
             {% endif %}
         </p>
-    {% elif me_timed_out == '01' %}
+    {% elif me_timed_out == 'c' %}
         <p>
             You timed out, but made one decision.
         </p>
@@ -36,7 +36,7 @@
         </p>
     {% else %}
         <p>
-            {% if opponent1_timed_out == '1' %}
+            {% if opponent1_timed_out == 'b' %}
                 <b>{{ opponent1_label }}</b> timed out.
             {% elif same_choice1 %}
                 Both you and <b>{{ opponent1_label }}</b> chose to {{ my_decision1 }}.
@@ -45,7 +45,7 @@
             {% endif %}
         </p>
         <p>
-            {% if opponent2_timed_out == '1' %}
+            {% if opponent2_timed_out == 'c' %}
                 <b>{{ opponent2_label }}</b> timed out.
             {% elif same_choice2 %}
                 Both you and <b>{{ opponent2_label }}</b> chose to {{ my_decision2 }}.

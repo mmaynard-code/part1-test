@@ -74,7 +74,8 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     # Setup variables
-    timed_out = models.StringField()
+    timed_out = models.StringField(
+        initial='a0')
     treatment_id = models.IntegerField()
     opponents = models.StringField()
 
@@ -173,22 +174,22 @@ def set_payoff(player: Player):
         ),
     )
     # Payoff calculations accounting for timeouts
-    if player.timed_out == '11':
+    if player.timed_out == 'd':
         # If player times out with no decisions, no payoff
         player.payoff = 0
-    elif player.timed_out == '10':
+    elif player.timed_out == 'c':
         # If player timed out with only decision 1, partial payoff
         player.payoff = payoff_matrix[player.decision1][opponent1.decision1] + 0
-    elif player.timed_out == '01':
+    elif player.timed_out == 'b':
         # If player timed out with only decision 2, partial payoff
         player.payoff = 0 + payoff_matrix[player.decision2][opponent2.decision2]
-    elif opponent1.timed_out[0] == '1' and opponent2.timed_out[1] == '1':
+    elif opponent1.timed_out == 'c' and opponent2.timed_out == 'b':
         # If both opponents time out on players decisions compensate $4
         player.payoff = 2 + 2
-    elif opponent1.timed_out[0] == '1':
+    elif opponent1.timed_out == 'c':
         # If opponent1 times out on players decision compensate $2 and payoff the remaining decision
         player.payoff = 2 + payoff_matrix[player.decision2][opponent2.decision2]
-    elif opponent2.timed_out[1] == '1':
+    elif opponent2.timed_out == 'b':
         # If opponent2 times out on players decision compensate $2 and payoff the remaining decision
         player.payoff = payoff_matrix[player.decision1][opponent1.decision1] + 2
     else:
@@ -538,17 +539,17 @@ class Decision(Page):
             if player.decision1 == '' and player.decision2 == '':
                 player.decision1 = 'Y'
                 player.decision2 = 'Y'
-                player.timed_out = '11'
+                player.timed_out = 'd'
             # If one decision is made, timeout code is 10 or 01
             elif player.decision1 == '':
                 player.decision1 = 'Y'
-                player.timed_out = '10'
+                player.timed_out = 'b'
             elif player.decision2 == '':
                 player.decision2 = 'Y'
-                player.timed_out = '01'
+                player.timed_out = 'c'
         else:
             # Otherwise ensures timeout value is none
-            player.timed_out = '00'
+            player.timed_out = 'a'
 
 
 class ResultsWaitPage(WaitPage):
@@ -683,8 +684,8 @@ class Results(Page):
             other_player15_base=base_rating_list[14],
             # Time out checks
             me_timed_out=player.timed_out,
-            opponent1_timed_out=opponent1.timed_out[0],
-            opponent2_timed_out=opponent2.timed_out[1],
+            opponent1_timed_out=opponent1.timed_out,
+            opponent2_timed_out=opponent2.timed_out,
             # Labels
             opponent1_label=opponent1.participant.label,
             opponent2_label=opponent2.participant.label,
