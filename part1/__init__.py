@@ -25,12 +25,6 @@ class Constants(BaseConstants):
     # Used to control the start of rating sharings
     round_share_start = 6
 
-    # Page instructions for rounds 1-10
-
-    instructions = 'part1/instructions.html'
-    instructions_dmg = 'part/instructionsdmg.html'
-    instructions_rog = 'part1/instructionsrog.html'
-
     # Payoff values
     betray_payoff = c(6)
     betrayed_payoff = c(0)

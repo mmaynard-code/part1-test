@@ -1020,18 +1020,16 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 </div>
-
-
     <p style="text-align:center">
         <button class="btn btn-primary btn-block" style="width:100px; margin-top:10px"><b>Next</b></button>
     </p>
-    {% if subsession.round_number > 5 %}
-        {% include Constants.instructions_rog %}
+    {% if subsession.round_number > Constants.round_share_start %}
+        {% include {% static "part1/instructions_rog" %} %}
     {% else %}
-        {% include Constants.instructions_dmg %}
+        {% include {% static "part1/instructions_dmg" %} %}
     {% endif %}
 
 {% endblock %}

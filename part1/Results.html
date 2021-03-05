@@ -992,11 +992,10 @@
 <input type="text" name="my_ratings" id="my_ratings"/>
 <input type="text" name="shared_ratings" id="shared_ratings"/>
 
-    {% if subsession.round_number >  Constants.round_share_start %}
-        {% include Constants.instructions_rog %}
+    {% if subsession.round_number > Constants.round_share_start %}
+        {% include {% static "part1/instructions_rog" %} %}
     {% else %}
-        {% include Constants.instructions_dmg %}
+        {% include {% static "part1/instructions_dmg" %} %}
     {% endif %}
-
 
 {% endblock %}
