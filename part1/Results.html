@@ -1,0 +1,1002 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Results{% endblock %}
+{% block content %}
+
+<div class="row">
+<div class="col-12">
+    <p>
+        Your randomly assigned name is <b>{{ player.participant.label}}</b>.
+    </p>
+    {% if me_timed_out == '11' %}
+        <p>
+            You timed out without making any decisions.
+        </p>
+    {% elif me_timed_out == '10' %}
+        <p>
+            You timed out, but made one decision.
+        </p>
+        <p>
+            {% if same_choice1 %}
+                Both you and <b>{{ opponent1_label }}</b> chose to {{ my_decision1 }}.
+            {% else %}
+                You chose {{ my_decision1 }} and <b>{{ opponent1_label }}</b> chose {{ opponent1_decision }}.
+            {% endif %}
+        </p>
+    {% elif me_timed_out == '01' %}
+        <p>
+            You timed out, but made one decision.
+        </p>
+        <p>
+            {% if same_choice2 %}
+                Both you and <b>{{ opponent2_label }}</b> chose to {{ my_decision2 }}.
+            {% else %}
+                You chose {{ my_decision2 }} and <b>{{ opponent2_label }}</b> chose {{ opponent2_decision }}.
+            {% endif %}
+        </p>
+    {% else %}
+        <p>
+            {% if opponent1_timed_out == '1' %}
+                <b>{{ opponent1_label }}</b> timed out.
+            {% elif same_choice1 %}
+                Both you and <b>{{ opponent1_label }}</b> chose to {{ my_decision1 }}.
+            {% else %}
+                You chose {{ my_decision1 }} and <b>{{ opponent1_label }}</b> chose {{ opponent1_decision }}.
+            {% endif %}
+        </p>
+        <p>
+            {% if opponent2_timed_out == '1' %}
+                <b>{{ opponent2_label }}</b> timed out.
+            {% elif same_choice2 %}
+                Both you and <b>{{ opponent2_label }}</b> chose to {{ my_decision2 }}.
+            {% else %}
+                You chose {{ my_decision2 }} and <b>{{ opponent2_label }}</b> chose {{ opponent2_decision }}.
+            {% endif %}
+        </p>
+    {% endif %}
+    <p>
+        As a result, you earned <b>{{ player.payoff }}</b>.
+    </p>
+</div>
+<div class="col" style="margin-top: 10px">
+    <div class="row">
+        <div class="col-7">
+            <p>
+            You can rate other players on a scale of 0 to 10 according to how much you trust them.
+            You can only rate players who you have already met in one of the games up to the round you are in.
+            </p>
+            {% if subsession.round_number == 1 %}
+                <p>
+                    As this is the first round, everyone starts with a default score of 5. You will be able to see your ratings in the next round.
+                </p>
+            {% elif subsession.round_number > Constants.round_share_start %}
+                <p>
+                    If your partner shared their rating with you, these are now the averages of your most recent rating and theirs from the previous rounds.
+                </p>
+            {% else %}
+                <p>
+                    These are your most recently updated ratings for each other participant from previous rounds.
+                </p>
+            {% endif %}
+        </div>
+        <div class="col">
+            {% if subsession.round_number >= Constants.round_share_start %}
+            <p>You have been randomly matched with <b>{{subsession.treatment_id}}</b> partners, and will remain matched with them for the remaining rounds of the game.</p>
+            <p>You can share your ratings of other players with them: this will affect the ratings they see next round.</p>
+            {% else %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<div id="ratings-container">
+    <div class="row">
+        <div class="col-6">
+            <p>How would you rate those you played with this round?</p>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row">
+                <div class="col">
+                    <p><b>{{neighbour1}}</b></p>
+                </div>
+                <div class="col">
+                    <p><b>{{neighbour2}}</b></p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p><b>{{neighbour3}}</b></p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row" id="otherplayer01">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer01range"
+                           value="{{other_player01_rank}}" {{other_player01_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer01range" class="form-label float-left">{{other_player01}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player01_base}}"
+                           id="share01_neighbour01" {{other_player01_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share01_neighbour01">
+                    Share {{other_player01}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player01_base}}"
+                           id="share01_neighbour02" {{other_player01_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share01_neighbour02">
+                    Share {{other_player01}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player01_base}}"
+                           id="share01_neighbour03" {{other_player01_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share01_neighbour03">
+                    Share {{other_player01}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer02">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer02range"
+                           value="{{other_player02_rank}}" {{other_player02_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-2">
+                    <label for="otherplayer02range" class="form-label float-left">{{other_player02}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player02_base}}"
+                           id="share02_neighbour01" {{other_player02_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share02_neighbour01">
+                    Share {{other_player02}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player02_base}}"
+                           id="share02_neighbour02" {{other_player02_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share02_neighbour02">
+                    Share {{other_player02}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player02_base}}"
+                           id="share02_neighbour03" {{other_player02_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share02_neighbour03">
+                    Share {{other_player02}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" id="otherplayer03">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer03range"
+                           value="{{other_player03_rank}}" {{other_player03_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer03range" class="form-label float-left">{{other_player03}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player03_base}}"
+                           id="share03_neighbour01" {{other_player03_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share03_neighbour01">
+                    Share {{other_player03}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player03_base}}"
+                           id="share03_neighbour02" {{other_player03_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share03_neighbour02">
+                    Share {{other_player03}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player03_base}}"
+                           id="share03_neighbour03" {{other_player03_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share03_neighbour03">
+                    Share {{other_player03}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+        <div class="row" id="otherplayer04">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer04range"
+                           value="{{other_player04_rank}}" {{other_player04_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer04range" class="form-label float-left">{{other_player04}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player04_base}}"
+                           id="share04_neighbour01" {{other_player04_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share04_neighbour01">
+                    Share {{other_player04}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player04_base}}"
+                           id="share04_neighbour02" {{other_player04_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share04_neighbour02">
+                    Share {{other_player04}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player04_base}}"
+                           id="share04_neighbour03" {{other_player04_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share04_neighbour03">
+                    Share {{other_player04}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer05">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer05range"
+                           value="{{other_player05_rank}}" {{other_player05_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer05range" class="form-label float-left">{{other_player05}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player05_base}}"
+                           id="share05_neighbour01" {{other_player05_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share05_neighbour01">
+                    Share {{other_player05}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player05_base}}"
+                           id="share05_neighbour02" {{other_player05_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share05_neighbour02">
+                    Share {{other_player05}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player05_base}}"
+                           id="share05_neighbour03" {{other_player05_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share05_neighbour03">
+                    Share {{other_player05}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer06">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer06range"
+                           value="{{other_player06_rank}}" {{other_player06_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer06range" class="form-label float-left">{{other_player06}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player06_base}}"
+                           id="share06_neighbour01" {{other_player06_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share06_neighbour01">
+                    Share {{other_player06}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player06_base}}"
+                           id="share06_neighbour02" {{other_player06_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share06_neighbour02">
+                    Share {{other_player06}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player06_base}}"
+                           id="share06_neighbour03" {{other_player06_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share06_neighbour03">
+                    Share {{other_player06}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer07">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer07range"
+                           value="{{other_player07_rank}}" {{other_player07_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer07range" class="form-label float-left">{{other_player07}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player07_base}}"
+                           id="share07_neighbour01" {{other_player07_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share07_neighbour01">
+                    Share {{other_player07}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player07_base}}"
+                           id="share07_neighbour02" {{other_player07_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share07_neighbour02">
+                    Share {{other_player07}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player07_base}}"
+                           id="share07_neighbour03" {{other_player07_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share07_neighbour03">
+                    Share {{other_player07}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer08">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer08range"
+                           value="{{other_player08_rank}}" {{other_player08_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer08range" class="form-label float-left">{{other_player08}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player08_base}}"
+                           id="share08_neighbour01" {{other_player08_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share08_neighbour01">
+                    Share {{other_player08}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player08_base}}"
+                           id="share08_neighbour02" {{other_player08_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share08_neighbour02">
+                    Share {{other_player08}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player08_base}}"
+                           id="share08_neighbour03" {{other_player08_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share08_neighbour03">
+                    Share {{other_player08}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer09">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer09range"
+                           value="{{other_player09_rank}}" {{other_player09_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer09range" class="form-label float-left">{{other_player09}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player09_base}}"
+                           id="share09_neighbour01" {{other_player09_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share09_neighbour01">
+                    Share {{other_player09}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player09_base}}"
+                           id="share09_neighbour02" {{other_player09_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share09_neighbour02">
+                    Share {{other_player09}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player09_base}}"
+                           id="share09_neighbour03" {{other_player09_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share09_neighbour03">
+                    Share {{other_player09}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer10">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer10range"
+                           value="{{other_player10_rank}}" {{other_player10_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer10range" class="form-label float-left">{{other_player10}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player10_base}}"
+                           id="share10_neighbour01" {{other_player10_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share10_neighbour01">
+                    Share {{other_player10}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player10_base}}"
+                           id="share10_neighbour02" {{other_player10_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share10_neighbour02">
+                    Share {{other_player10}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player10_base}}"
+                           id="share10_neighbour03" {{other_player10_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share10_neighbour03">
+                    Share {{other_player10}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer11">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer11range"
+                           value="{{other_player11_rank}}" {{other_player11_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer11range" class="form-label float-left">{{other_player11}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player11_base}}"
+                           id="share11_neighbour01" {{other_player11_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share11_neighbour01">
+                    Share {{other_player11}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player11_base}}"
+                           id="share11_neighbour02" {{other_player11_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share11_neighbour02">
+                    Share {{other_player11}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player11_base}}"
+                           id="share11_neighbour03" {{other_player11_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share11_neighbour03">
+                    Share {{other_player11}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer12">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer12range"
+                           value="{{other_player12_rank}}" {{other_player12_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer12range" class="form-label float-left">{{other_player12}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player12_base}}"
+                           id="share12_neighbour01" {{other_player12_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share12_neighbour01">
+                    Share {{other_player12}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player12_base}}"
+                           id="share12_neighbour02" {{other_player12_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share12_neighbour02">
+                    Share {{other_player12}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player12_base}}"
+                           id="share12_neighbour03" {{other_player12_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share12_neighbour03">
+                    Share {{other_player12}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer13">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer13range"
+                           value="{{other_player13_rank}}" {{other_player13_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer13range" class="form-label float-left">{{other_player13}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player13_base}}"
+                           id="share13_neighbour01" {{other_player13_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share13_neighbour01">
+                    Share {{other_player13}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player13_base}}"
+                           id="share13_neighbour02" {{other_player13_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share13_neighbour02">
+                    Share {{other_player13}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player13_base}}"
+                           id="share13_neighbour03" {{other_player13_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share13_neighbour03">
+                    Share {{other_player13}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer14">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer14range"
+                           value="{{other_player14_rank}}" {{other_player14_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer14range" class="form-label float-left">{{other_player14}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player14_base}}"
+                           id="share14_neighbour01" {{other_player14_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share14_neighbour01">
+                    Share {{other_player14}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player14_base}}"
+                           id="share14_neighbour02" {{other_player14_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share14_neighbour02">
+                    Share {{other_player14}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player14_base}}"
+                           id="share14_neighbour03" {{other_player14_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share14_neighbour03">
+                    Share {{other_player14}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer15">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer15range"
+                           value="{{other_player15_rank}}" {{other_player15_disable}}>
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer15range" class="form-label float-left">{{other_player15}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player15_base}}"
+                           id="share15_neighbour01" {{other_player15_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share15_neighbour01">
+                    Share {{other_player15}} rating
+                    </label>
+                </div>
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player15_base}}"
+                           id="share15_neighbour02" {{other_player15_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share15_neighbour02">
+                    Share {{other_player15}} rating
+                    </label>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="{{other_player15_base}}"
+                           id="share15_neighbour03" {{other_player15_disable}}>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share15_neighbour03">
+                    Share {{other_player15}} rating
+                    </label>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <p style="text-align:center">
+        <button class="btn btn-primary btn-block" style="width:100px; margin-top:10px"><b>Next</b></button>
+    </p>
+<input type="text" name="my_ratings" id="my_ratings"/>
+<input type="text" name="shared_ratings" id="shared_ratings"/>
+
+    {% if subsession.round_number >  Constants.round_share_start %}
+        {% include Constants.instructions_rog %}
+    {% else %}
+        {% include Constants.instructions_dmg %}
+    {% endif %}
+
+
+{% endblock %}

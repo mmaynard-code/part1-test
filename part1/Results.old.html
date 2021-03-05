@@ -1,0 +1,229 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Results - Round {{subsession.round_number}}{% endblock %}
+{% block content %}
+
+<div class="row">
+<div class="col-12">
+    <p>
+        Your randomly assigned name is <b>{{ player.participant.label}}</b>.
+    </p>
+    {% if me_timed_out == '11' %}
+        <p>
+            You timed out without making any decisions.
+        </p>
+    {% elif me_timed_out == '10' %}
+        <p>
+            You timed out, but made one decision.
+        </p>
+        <p>
+            {% if same_choice1 %}
+            Both you and <b>{{ opponent1_label }}</b> chose <b>{{ my_decision1 }}</b>.
+            {% else %}
+                You chose <b>{{ my_decision1 }}</b> and <b>{{ opponent1_label }}</b> chose <b>{{ opponent1_decision }}</b>.
+            {% endif %}
+        </p>
+    {% elif me_timed_out == '01' %}
+        <p>
+            You timed out, but made one decision.
+        </p>
+        <p>
+            {% if same_choice2 %}
+            Both you and <b>{{ opponent2_label }}</b> chose <b>{{ my_decision2 }}</b>.
+            {% else %}
+            You chose <b>{{ my_decision2 }}</b> and <b>{{ opponent2_label }}</b> chose <b>{{ opponent2_decision }}</b>.
+            {% endif %}
+        </p>
+    {% else %}
+        <p>
+            {% if opponent1_timed_out == '1' %}
+                <b>{{ opponent1_label }}</b> timed out.
+            {% elif same_choice1 %}
+                Both you and <b>{{ opponent1_label }}</b> chose <b>{{ my_decision1 }}</b>.
+            {% else %}
+                You chose <b>{{ my_decision1 }}</b> and <b>{{ opponent1_label }}</b> chose <b>{{ opponent1_decision }}</b>.
+            {% endif %}
+        </p>
+        <p>
+            {% if opponent2_timed_out == '1' %}
+                <b>{{ opponent2_label }}</b> timed out.
+            {% elif same_choice2 %}
+                Both you and <b>{{ opponent2_label }}</b> chose <b>{{ my_decision2 }}</b>.
+            {% else %}
+                You chose <b>{{ my_decision2 }}</b> and <b>{{ opponent2_label }}</b> chose <b>{{ opponent2_decision }}</b>.
+            {% endif %}
+        </p>
+    {% endif %}
+    <p>
+        As a result, you earned <b>{{ player.payoff }}</b>.
+    </p>
+    <p style="text-align:center">
+        <button class="btn btn-primary btn-block" style="width:100px; margin-top:10px"><b>Next</b></button>
+    </p>
+</div>
+<div id="slider-group" class="col-7 form-group">
+    <p>
+        You can rate other players on a scale of 0 to 10 according to how much you trust them.
+        You can only rate players who you have already met in one of the games up to the round you are in.
+
+    </p>
+    {% if subsession.round_number == 1 %}
+        <p>
+            As this is the first round, everyone starts with a default score of 5. You will be able to see your ratings in the next round.
+        </p>
+    {% elif subsession.round_number > 5 %}
+        <p>
+            If your partner shared their rating with you, these are now the averages of your most recent rating and theirs from the previous rounds.
+        </p>
+    {% else %}
+        <p>
+            These are your most recently updated ratings for each other participant from previous rounds.
+        </p>
+    {% endif %}
+    <div class="row g-1">
+        <div class="col">
+            <p>How would you rate those you played with this round?</p>
+        </div>
+    </div>
+    <div class="row g-1">
+        <div class="col-1 text-end">
+            0
+        </div>
+        <div class="col-8">
+            <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                   max="{{Constants.max_reputation}}" step="1" id="otherplayer01range"
+                   value="{{other_player01_rank}}" {{other_player01_known}}>
+        </div>
+        <div class="col-1">
+             10
+        </div>
+        <div class="col-2">
+            <label for="otherplayer01range" class="form-label float-left">{{other_player01}}</label>
+        </div>
+    </div>
+    <div class="row g-1">
+        <div class="col-1 text-end">
+            0
+        </div>
+        <div class="col-8">
+            <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                   max="{{Constants.max_reputation}}" step="1" id="otherplayer02range"
+                   value="{{other_player02_rank}}" {{other_player02_known}}>
+        </div>
+        <div class="col-1">
+             10
+        </div>
+        <div class="col-1">
+            <label for="otherplayer02range" class="form-label float-left">{{other_player02}}</label>
+        </div>
+    </div>
+    <div class="row g-1">
+        <div class="col-1 text-end">
+            0
+        </div>
+        <div class="col-8">
+            <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                   max="{{Constants.max_reputation}}" step="1" id="otherplayer03range"
+                   value="{{other_player03_rank}}" {{other_player03_known}}>
+        </div>
+        <div class="col-1">
+             10
+        </div>
+        <div class="col-1">
+            <label for="otherplayer03range" class="form-label float-left">{{other_player03}}</label>
+        </div>
+    </div>
+    <input type="text" name="my_ratings" id="my_ratings" />
+    <input type="text" name="shared_ratings" id="shared_ratings" />
+</div>
+<div id="check-group" class="col form-group gap-1">
+    {% if subsession.round_number > 0 %}
+    <p>You have been randomly matched with <b>{{player.treatment_id}}</b> partners, and will remain matched with them for the remaining rounds of the game.</p>
+    <p>You can share your ratings of other players with them: this will affect the ratings they see next round.</p>
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <p>Share with <b>{{neighbour1}}:</b></p>
+            </div>
+            <div class="row g-2">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="0" id="share01_neighbour01">
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share01_neighbour01">
+                    Share {{other_player01}} rating
+                    </label>
+                </div>
+            </div>
+            <div class="row g-2 mt-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="0" id="share02_neighbour01">
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share02_neighbour01">
+                    Share {{other_player02}} rating
+                    </label>
+                </div>
+            </div>
+            <div class="row g-2 mt-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="0" id="share03_neighbour01">
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share03_neighbour01">
+                    Share {{other_player03}} rating
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="row">
+                <p>Share with <b>{{neighbour2}}:</b></p>
+            </div>
+            <div class="row g-2">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="0" id="share01_neighbour02">
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share01_neighbour02">
+                    Share {{other_player01}} rating
+                    </label>
+                </div>
+            </div>
+            <div class="row g-2 mt-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="0" id="share02_neighbour02">
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share02_neighbour02">
+                    Share {{other_player02}} rating
+                    </label>
+                </div>
+            </div>
+            <div class="row g-2 mt-1">
+                <div class="col-1">
+                    <input class="form-check-input" type="checkbox" value="0" id="share03_neighbour02">
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="share03_neighbour02">
+                    Share {{other_player03}} rating
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% else %}
+    <p>You will be randomly matched with several partners in Round 6.</p>
+    <p>It is currently Round {{ subsession.round_number }}.</p>
+    {% endif %}
+</div>
+</div>
+    {% if subsession.round_number > 5%}
+        {% include Constants.instructions_rog %}
+    {% else %}
+        {% include Constants.instructions_dmg %}
+    {% endif %}
+
+
+{% endblock %}
