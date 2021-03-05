@@ -993,9 +993,9 @@
 <input type="text" name="shared_ratings" id="shared_ratings"/>
 
     {% if subsession.round_number > Constants.round_share_start %}
-        {% include {% static "part1/instructions_rog" %} %}
+        {% include static "part1/instructions_rog" %}
     {% else %}
-        {% include {% static "part1/instructions_dmg" %} %}
+        {% include static "part1/instructions_dmg" %}
     {% endif %}
 
 {% endblock %}
