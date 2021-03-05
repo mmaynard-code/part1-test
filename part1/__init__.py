@@ -26,9 +26,9 @@ class Constants(BaseConstants):
     round_share_start = 6
 
     # Page instructions for rounds 1-10
-    instructions = 'part1/instructions.html'
-    instructions_dmg = 'part1/instructionsdmg.html'
-    instructions_rog = 'part1/instructionsrog.html'
+    instructions = 'instructions.html'
+    instructions_dmg = 'instructionsdmg.html'
+    instructions_rog = 'instructionsrog.html'
 
     # Payoff values
     betray_payoff = c(6)
