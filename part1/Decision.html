@@ -1027,9 +1027,9 @@
         <button class="btn btn-primary btn-block" style="width:100px; margin-top:10px"><b>Next</b></button>
     </p>
     {% if subsession.round_number > Constants.round_share_start %}
-        {% include "part1/instructionsrog.html" %}
+        {% include "global/instructionsrog.html" %}
     {% else %}
-        {% include "part1/instructionsdmg.html" %}
+        {% include "global/instructionsdmg.html" %}
     {% endif %}
 
 {% endblock %}
