@@ -1,0 +1,133 @@
+
+<div class="card bg-light m-3">
+    <div class="card-body">
+
+    <h2>
+        Instructions for Part 1
+    </h2>
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+
+    <h3>
+        Participants
+    </h3>
+    <p>
+            Your randomly assigned name is <b>{{ player.participant.label}}</b>.
+    </p>
+    <p>
+        Below you can read the instructions for the first part of the experiment. 16 participants, including
+        you, will participate in the experiment at the same time. This part of the experiment consists of
+        several rounds of multiplayer decision-making. In each round, you will be paired with two other
+        participants. Both of your pairs are determined by the computer using a random number generator.
+        Participants of the experiment are identified with fictional names (e.g. Acantha, Belen, Calandra etc.).
+        Fictional names of your current pairs will be displayed on your screen. MTurk IDs will be kept confidential:
+        we will not reveal which identifier belongs to which participant neither during nor after the experiment.
+
+        One round contains the following elements:
+    </p>
+
+    <h3>
+        The game
+    </h3>
+    <p>
+        With both of your pairs, you face the following decision.
+        You can choose from two options: these two options are indicated with <b>X</b> and <b>Y</b>.
+    </p>
+    <p>
+        <i>The amount that you earn in this round does not depend only on your decision, but on the decision
+            of your pair as well, as follows:</i>
+    </p>
+    <p>
+        <i>In each cell, the amount to the left is the payoff for
+        you and to the right for the other participant.</i>
+    </p>
+    <table class='table table-bordered text-center'
+           style='width: auto; margin: auto'>
+        <tr>
+            <th colspan=2 rowspan=2></th>
+            <th colspan=2>The Other Participant</th>
+        </tr>
+        <tr>
+            <th>Choose X</th>
+            <th>Choose Y</th>
+        </tr>
+        <tr>
+            <th rowspan=2><span style="transform: rotate(-90deg);">You</span></th>
+            <th>Choose X</th>
+            <td>You both gain {{ Constants.both_cooperate_payoff }}.</td>
+            <td>You gain {{ Constants.betrayed_payoff }}. They gain {{ Constants.betray_payoff }}</td>
+        </tr>
+        <tr>
+            <th>Choose Y</th>
+            <td>You gain {{ Constants.betray_payoff }}. They gain {{ Constants.betrayed_payoff }}</td>
+            <td>You both gain {{ Constants.both_defect_payoff }}.</td>
+        </tr>
+    </table>
+    <p>
+        If <b>both</b> of you select <b>X</b>: $5
+        If <b>both</b> of you select <b>Y</b>: $2
+        If <b>you</b> select <b>Y</b> and <b>your partner</b> selects <b>X</b>: $6
+        If <b>you</b> select <b>X</b> and <b>your partner</b> selects <b>Y</b>: $0
+        If you run out of time: $0
+    </p>
+    <p>
+        If your partners run out of time, it is considered as they have chosen Y.
+        Earnings are calculated according to these rules for all players.
+        Possible payments of the game, also detailed earlier, will be displayed on your screen during the game
+        which makes it easier to remember all possible outcomes.
+        The result of the games appears on your screen after decisions have been made.
+        The average of the two games will be your earnings in each round.
+    </p>
+    <h3>
+        Your final payment
+    </h3>
+    <p>
+        Each round is important for your final payment. By using a random number generator we will select
+        4 rounds. The average of your payoffs in these 4 rounds will be your final payment.
+    </p>
+    <h3>
+        Rating others
+    </h3>
+    <p>
+        After you are shown the result of the game you will have the opportunity to rate other players on a
+        scale from 0 to 10 according to how much you trust them. In a given round, you can only rate those who
+        you have already met in one of the games up to the round you are in. By default, the neutral value of 5
+        is set to everyone. In this step others can also evaluate your trustworthiness.
+        In the first five rounds, these two elements (game, rating) are repeated five times, but in Round 6 we
+        are going to introduce a new element: thereafter you will have the opportunity to share your rating with
+        other players.
+    </p>
+    <h3>
+        Communicate Ratings from Round 6
+    </h3>
+    <p>
+        In and after Round 6 you can share your rating with two players, who will be selected randomly. Their
+        fictional names will be displayed on your screen. They will remain your communication partner until the
+        end of the experiment. The information exchange is reciprocal; they can share the ratings with you in
+        this step.
+    </p>
+    <h3>
+        Update Ratings from Round 6
+    </h3>
+    <p>
+        After all evaluation have been sent, the ratings you received from your communication partners will
+        appear on your screen. At this stage, you have the opportunity again to change the points you allocated
+        previously, including those scores about whom you obtained information.
+    </p>
+    <h3>
+        Time
+    </h3>
+    <p>
+        In the upper right corner of your screen you can see how much time you have left to make your decision.
+
+        If you are ready, please click on the "Next" button on your screen.
+
+        <b>Have fun and good luck!</b>
+    </p>
+
+
+
+
+</div>
+</div>
