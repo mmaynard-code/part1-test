@@ -1,0 +1,25 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Thank you{% endblock %}
+{% block content %}
+
+    <p>
+        <em>Below are examples of messages that could be displayed for different experimental settings.</em>
+    </p>
+
+    <div class="panel panel-default" style="margin-bottom:10px">
+        <div class="panel-body">
+            <h3>Bonus</h3>
+            <p>Over the course of the experiment you earned a bonus of: <b>{{ participant.payoff }}</b></p>
+            <p>Upon acceptance of the HIT this bonus will be paid to you in the following days.</p>
+            <p>The reference for this bonus payment is: <b>{{ participant.code }}</b></p>
+
+            <h3>MTurk Completion Code</h3>
+            <p>Please enter the following completion code into MTurk to submit your survey: <b>{{ session.code }}</b></p>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+

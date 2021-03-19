@@ -5,13 +5,19 @@ SESSION_CONFIGS = [
     dict(
         name="Part1",
         display_name="part1",
-        app_sequence=['Game'],
+        app_sequence=['Game', 'payment_info'],
         num_demo_participants=16
     ),
     dict(
         name="Full_Experiment",
         display_name="experiment",
-        app_sequence=['Game','Survey','Interaction'],
+        app_sequence=['Game', 'Survey', 'Interaction', 'payment_info'],
+        num_demo_participants=16
+    ),
+    dict(
+        name="Payment",
+        display_name="payment",
+        app_sequence=['payment_info'],
         num_demo_participants=16
     )
 ]
