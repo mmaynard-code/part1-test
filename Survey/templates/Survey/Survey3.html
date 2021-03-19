@@ -1,0 +1,23 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Survey 7/8
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 1</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 54%" aria-valuenow="54" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+
+    <div>
+        <p><strong>Favorite sport to watch (select one):</strong></p>
+        {% formfield player.survey_3 label="" %}
+
+    </div>
+
+
+    {% next_button %}
+
+{% endblock %}

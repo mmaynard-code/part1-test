@@ -1,0 +1,763 @@
+{% extends "global/Page.html" %}
+
+{% block title %}Sharing{% endblock %}
+{% block content %}
+
+<div class="row">
+<div class="col-12">
+    <p>
+        Your randomly assigned name is <b>{{ player.participant.label}}</b>.
+    </p>
+    {% if me_timed_out == 'd0' or me_timed_out == 'd1' %}
+        <p>
+            You timed out without making any decisions.
+        </p>
+    {% elif me_timed_out == 'b0' or me_timed_out == 'b1' %}
+        <p>
+            You timed out, but made one decision.
+        </p>
+        <p>
+            {% if same_choice1 %}
+                Both you and <b>{{ opponent1_label }}</b> chose to {{ my_decision1 }} (<b>{{payoff1}}</b> earned)
+            {% else %}
+            You chose {{ my_decision1 }} and <b>{{ opponent1_label }}</b> chose {{ opponent1_decision }} (<b>{{payoff1}}</b> earned)
+            {% endif %}
+        </p>
+    {% elif me_timed_out == 'c0' or me_timed_out == 'c1' %}
+        <p>
+            You timed out, but made one decision.
+        </p>
+        <p>
+            {% if same_choice2 %}
+                Both you and <b>{{ opponent2_label }}</b> chose to {{ my_decision2 }} (<b>{{payoff2}}</b> earned)
+            {% else %}
+                You chose {{ my_decision2 }} and <b>{{ opponent2_label }}</b> chose {{ opponent2_decision }} (<b>{{payoff2}}</b> earned)
+            {% endif %}
+        </p>
+    {% else %}
+        <p>
+            {% if opponent1_timed_out == 'b0' or opponent1_timed_out == 'd0' or opponent1_timed_out == 'b1' or opponent1_timed_out == 'd1' %}
+                <b>{{ opponent1_label }}</b> timed out (<b>{{payoff1}}</b> earned)
+            {% elif same_choice1 %}
+                Both you and <b>{{ opponent1_label }}</b> chose to {{ my_decision1 }} (<b>{{payoff1}}</b> earned)
+            {% else %}
+                You chose {{ my_decision1 }} and <b>{{ opponent1_label }}</b> chose {{ opponent1_decision }} (<b>{{payoff1}}</b> earned)
+            {% endif %}
+        </p>
+        <p>
+            {% if opponent2_timed_out == 'c0' or opponent2_timed_out == 'd0' or opponent2_timed_out == 'c1' or opponent2_timed_out == 'd1' %}
+                <b>{{ opponent2_label }}</b> timed out (<b>{{payoff2}}</b> earned)
+            {% elif same_choice2 %}
+                Both you and <b>{{ opponent2_label }}</b> chose to {{ my_decision2 }} (<b>{{payoff2}}</b> earned)
+            {% else %}
+                You chose {{ my_decision2 }} and <b>{{ opponent2_label }}</b> chose {{ opponent2_decision }} (<b>{{payoff2}}</b> earned)
+            {% endif %}
+        </p>
+    {% endif %}
+    <p>
+        In total, you have earned <b>{{ player.payoff }}</b> this round.
+    </p>
+</div>
+
+
+<input type="hidden" name="my_ratings" id="my_ratings"/>
+<div id="ratings-container">
+    <div class="row">
+        <div class="col-6">
+            <p>Do you want to change your ratings based on what your partners shared with you?</p>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row">
+                <div class="col">
+                    <p><b>{{neighbour1}}</b> shared these ratings with you:</p>
+                </div>
+                <div class="col">
+                    <p><b>{{neighbour2}}</b> shared these ratings with you:</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p><b>{{neighbour3}}</b> shared these ratings with you:</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="row" id="otherplayer01">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer01range"
+                           value="{{other_player01_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer01range" class="form-label float-left">{{other_player01}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player01_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player01_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player01_n3rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer02">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer02range"
+                           value="{{other_player02_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-2">
+                    <label for="otherplayer02range" class="form-label float-left">{{other_player02}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player02_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player02_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player02_n3rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" id="otherplayer03">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer03range"
+                           value="{{other_player03_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer03range" class="form-label float-left">{{other_player03}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player03_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player03_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player03_n3rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+        <div class="row" id="otherplayer04">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer04range"
+                           value="{{other_player04_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer04range" class="form-label float-left">{{other_player04}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player04_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player04_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player04_n3rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer05">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer05range"
+                           value="{{other_player05_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer05range" class="form-label float-left">{{other_player05}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player05_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player05_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player05_n3rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer06">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer06range"
+                           value="{{other_player06_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer06range" class="form-label float-left">{{other_player06}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player06_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player06_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player06_n3rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer07">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer07range"
+                           value="{{other_player07_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer07range" class="form-label float-left">{{other_player07}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player07_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player07_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player07_n3rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer08">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer08range"
+                           value="{{other_player08_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer08range" class="form-label float-left">{{other_player08}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player08_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player08_n2rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player08_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer09">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer09range"
+                           value="{{other_player09_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer09range" class="form-label float-left">{{other_player09}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player09_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player09_n1rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player09_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer10">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer10range"
+                           value="{{other_player10_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer10range" class="form-label float-left">{{other_player10}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player10_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player10_n1rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player10_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer11">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer11range"
+                           value="{{other_player11_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer11range" class="form-label float-left">{{other_player11}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player11_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player11_n1rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player11_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer12">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer12range"
+                           value="{{other_player12_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer12range" class="form-label float-left">{{other_player12}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player12_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player12_n1rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player12_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer13">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer13range"
+                           value="{{other_player13_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer13range" class="form-label float-left">{{other_player13}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player13_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player13_n1rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player13_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer14">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer14range"
+                           value="{{other_player14_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer14range" class="form-label float-left">{{other_player14}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player14_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player14_n1rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player14_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="otherplayer15">
+        <div class="col-6">
+            <div class="row g-1">
+                <div class="col-1 text-end">
+                    0
+                </div>
+                <div class="col-8">
+                    <input type="range" class="form-range" min="{{Constants.min_reputation}}"
+                           max="{{Constants.max_reputation}}" step="1" id="otherplayer15range"
+                           value="{{other_player15_rank}}">
+                </div>
+                <div class="col-1">
+                     10
+                </div>
+                <div class="col-1">
+                    <label for="otherplayer15range" class="form-label float-left">{{other_player15}}</label>
+                </div>
+            </div>
+        </div>
+        {% if subsession.round_number >= Constants.round_share_start %}
+        <div class="col">
+        {% else %}
+        <div class="col invisible">
+        {% endif %}
+            <div class="row g-1">
+                <div class="col">
+                    <p>{{other_player15_n1rating}}</p>
+                </div>
+                <div class="col">
+                    <p>{{other_player15_n1rating}}</p>
+                </div>
+                {% if subsession.treatment_id == 3 %}
+                <div class="col">
+                    <p>{{other_player15_n1rating}}</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+    <p style="text-align:center">
+        <button class="btn btn-primary btn-block" style="width:100px; margin-top:10px"><b>Next</b></button>
+    </p>
+
+
+    <div class="card bg-light m-3">
+    <div class="card-body">
+
+    <h3>
+        Instructions
+    </h3>
+
+    <link rel="stylesheet" type="text/css"
+          href="{% static 'global/matrix.css' %}"/>
+
+    <h3>
+        The game
+    </h3>
+    <p>
+        With both of your pairs, you face the following decision.
+        You can choose from two options: these two options are indicated with <b>X</b> and <b>Y</b>.
+        <p>
+        <i>The amount that you earn in this round does not depend only on your decision, but on the decision
+            of your pair as well.</i>
+    </p>
+    </p>
+    <p>
+        If your partners run out of time, it is considered as they have chosen <b>Y</b>.
+        Earnings are calculated according to these rules for all players.
+        Possible payments of the game, also detailed earlier, will be displayed on your screen during the game
+        which makes it easier to remember all possible outcomes.
+        The result of the games appears on your screen after decisions have been made.
+        The average of the two games will be your earnings in each round.
+    </p>
+    <h3>
+        Your final payment
+    </h3>
+    <p>
+        Each round is important for your final payment. By using a random number generator we will select
+        4 rounds. The average of your payoffs in these 4 rounds will be your final payment.
+    </p>
+    <h3>
+        Rating others
+    </h3>
+    <p>
+        After you are shown the result of the game you will have the opportunity to rate other players on a
+        scale from 0 to 10 according to how much you trust them. In a given round, you can only rate those who
+        you have already met in one of the games up to the round you are in. By default, the neutral value of 5
+        is set to everyone. In this step others can also evaluate your trustworthiness.
+        In the first five rounds, these two elements (game, rating) are repeated five times, but in Round 6 we
+        are going to introduce a new element: thereafter you will have the opportunity to share your rating with
+        other players.
+    </p>
+    <h3>
+        Communicate Ratings
+    </h3>
+    <p>
+        From now on you can share your rating with two players, who will be selected randomly. They will remain
+        your communication partners until the ender of the experiment.
+    </p>
+    <h3>
+        Update Ratings
+    </h3>
+    <p>
+        After all evaluation have been sent, the ratings you received from your communication partners will
+        appear on your screen. At this stage, you have the opportunity again to change the points you allocated
+        previously, including those scores about whom you obtained information.
+    </p>
+</div>
+</div>
+
+
+{% endblock %}

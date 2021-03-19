@@ -1,0 +1,27 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Message-sending task
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 1</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 81%" aria-valuenow="81" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+
+    <div>
+        <p>
+            You can now choose a message to send to one of the other participants.
+            The message that you send may be displayed on the screen of another participant later during the experiment.
+            Not all messages are going to be received.
+        </p>
+        {% formfield player.survey_6 label="" %}
+
+    </div>
+
+
+    {% next_button %}
+
+{% endblock %}

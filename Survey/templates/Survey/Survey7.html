@@ -1,0 +1,54 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Sharing-decision task
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 1</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+
+    <div>
+        <p class="alert alert-info">
+            In the following task you are matched with one of the other participants from the previous task.
+            The amount you earn in this task will count towards your payment that you are going to receive at the end of the experiment.
+        </p>
+        <p style="margin-top: 10pt;">
+            You have received <strong>20</strong> Monetary Units (MUs). 
+            You can give some of it to this other participant
+            (please round up to one decimal, for instance 0.6). 
+            The other participant has also received <strong>20</strong> MU and can also divide this amount
+            according to his/her will between him/her and you. 
+        </P>
+        <p>
+            Your reward in this task depends on how much you give the other participant, and how much they give you:
+            Your share is calculated as the sum of what you kept, and what you received from the other participant.
+        </p>
+        <li>
+            If your share of what you kept, and what you received from the other participant,
+            is <strong>more</strong> than their share of the sum of what you gave, and what they kept
+            then you will have won this task and you will receive the amount that you choose to keep yourself as payment at the end of the experiment.
+        </li>
+        <li>
+            If your share is <strong>lower</strong>, then you receive the amount that the other participant chose to give to you.
+        </li>
+        <li>
+            If your share and the other participants shares are <strong>equal</strong>, there will be a lottery between the two of you
+            in which there is 50% chance that you win and receive the money that you kept, and a 50% chance that you lose and receive nothing.
+        </li>
+        <p style="margin-top: 10pt;"><strong>
+            Now please make a decision how much of your 20 Monetary Units (MUs) 
+            would like to give to the other participant.</strong>
+        </p>
+
+        {% formfield player.survey_7 %}
+
+    </div>
+
+
+    {% next_button %}
+
+{% endblock %}

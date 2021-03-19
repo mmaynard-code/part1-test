@@ -1,0 +1,95 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+    Online meeting task
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 1</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+
+    <style>
+        table, td, th {
+        border: 1px solid black;
+        height:30pt;
+        }
+        
+        table {
+        width: 100%;
+        border-collapse: collapse;
+        }
+    </style>
+
+    <div class="alert alert-primary" style="border-style: dotted; padding: 2%;">
+        <p>
+            Life during the pandemic makes online meetings necessary. 
+            Having your camera and microphone off during online meetings, however, 
+            allows you to do other things in the meantime, paying only half attention to the meeting. 
+            The MORE people turn the camera and microphone off during a meeting, 
+            the lower the productivity of the firm is, hence there will be LOWER bonuses at the end of the year.
+        </P>
+        <p> 
+            Imagine that you are in such a situation together with 3 others. 
+            Your monetary rewards depend on your choice and of the choice of others. 
+            They are displayed in the following table.    
+        </p>
+    </div>
+
+
+    <div>
+        <p style="padding-top: 10pt;"><strong>
+            Different outcomes are displayed in the following table:
+        </strong>         
+        </p>
+        <table style="margin-top: 20pt; text-align: center; margin: auto;">
+            <tr>
+                <th style="width: 120pt;">
+                    Choose your decision:
+                </th>
+                <th style="width: 250pt;">Number of other participants who have their camera and microphone ON</th>
+                <th style="width: 50pt;">0</th>
+                <th style="width: 50pt;">1</th>
+                <th style="width: 50pt;">2</th>
+                <th style="width: 50pt;">3</th>
+            </tr>
+            <tr>
+                <th rowspan="2">
+                    <table>
+                        {% for choice in form.survey_5 %}
+                            <tr><td>{{ choice }}</td></tr>
+                        {% endfor %}
+                    </table>
+                </th>
+                <td>
+                    I turn OFF my camera and mute my microphone
+                </td>
+                <td>7</td>
+                <td>11</td>
+                <td>15</td>
+                <td>19</td>
+            </tr>
+            <tr>
+                <td>
+                    I have my camera and microphone ON
+                </td>
+                <td>4</td>
+                <td>8</td>
+                <td>12</td>
+                <td>16</td>
+            </tr>
+        </table><br>
+        <p class="alert alert-warning" style="padding-top: 15pt;">
+            These are your actual rewards in Monetary Units (MUs) that you will receive 
+            at the end of the experiment. Hence, these MUs will be translated into money. 
+            So take good care, with your decision you influence how much money you earn in this experiment.
+        </p>
+    </div>
+    <div style="margin-bottom: 10pt; color: red;">*Note that your identity remains confidential.</div>
+
+
+    {% next_button %}
+
+{% endblock %}

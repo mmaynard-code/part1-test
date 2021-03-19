@@ -1,0 +1,23 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Survey 8/8
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 1</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 63%" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+
+    <div>
+        <p><strong>Each person has good and bad characteristics. Which of the following characteristics suits you the best?</strong></p>
+        {% formfield player.survey_4 label=""%}
+
+    </div>
+
+
+    {% next_button %}
+
+{% endblock %}

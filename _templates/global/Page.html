@@ -5,16 +5,9 @@
 {% endblock %}
 {% block global_scripts  %}
 
-
-<script type="text/javascript">
-    $(".form-range").slider({
-    tooltip: 'always'
-    });
-</script>
-
 <script>
 
-    $( document ).ready( doResults1 ); // fill my_results on page load then refill on any slider change
+    $( document ).ready( doResults ); // fill my_results on page load then refill on any slider change
 
     var opBar01 = $('#otherplayer01 .form-range');
     var opBox01 = $("#otherplayer01 .form-check-input");
@@ -61,8 +54,6 @@
     var opBar15 = $('#otherplayer15 .form-range');
     var opBox15 = $("#otherplayer15 .form-check-input");
 
-
-
     opBar01.on('change', function(){
         var rating1 = $(this).val();
         $("#otherplayer01 .form-check-input:checked").each(function(){
@@ -74,11 +65,7 @@
             var rating1 = $('#otherplayer01 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -93,11 +80,7 @@
             var rating1 = $('#otherplayer02 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -112,11 +95,7 @@
             var rating1 = $('#otherplayer03 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -131,11 +110,7 @@
             var rating1 = $('#otherplayer04 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -150,11 +125,7 @@
             var rating1 = $('#otherplayer05 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -169,11 +140,7 @@
             var rating1 = $('#otherplayer06 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -188,11 +155,7 @@
             var rating1 = $('#otherplayer07 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -207,11 +170,7 @@
             var rating1 = $('#otherplayer08 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -226,11 +185,7 @@
             var rating1 = $('#otherplayer09 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -245,11 +200,7 @@
             var rating1 = $('#otherplayer10 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -264,11 +215,7 @@
             var rating1 = $('#otherplayer11 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -283,11 +230,7 @@
             var rating1 = $('#otherplayer12 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -302,11 +245,7 @@
             var rating1 = $('#otherplayer13 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -321,11 +260,7 @@
             var rating1 = $('#otherplayer14 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
@@ -340,22 +275,18 @@
             var rating1 = $('#otherplayer15 .form-range').val();
             $(this).val(rating1);
         } else {
-            if (this.disabled) {
-                $(this).val('-2');
-            } else {
-                $(this).val('-1');
-            }
+            $(this).val('-1');
         }
     });
 
     $( "#ratings-container .form-range" ).change(function() {
-        doResults1()
+        doResults()
     });
     $( "#ratings-container .form-check-input" ).change(function () {
-        doResults1()
+        doResults()
     });
 
-    function doResults1() {
+    function doResults() {
 
         var result1 = "";
         $('#ratings-container input[type=range]').each(function () {

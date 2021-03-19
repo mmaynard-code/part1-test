@@ -1,0 +1,35 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Welcome to the second part of the experiment! 
+{% endblock %}
+
+{% block content %}
+
+
+    <p style="padding-top: 10pt;">
+        This is an experiment about the forming of opinions. 
+        All instructions will be displayed on your screen. 
+        All your answers will be coded and will be handled strictly confidentially. 
+        Thank you very much in advance for your participation.
+    </p>
+    <p style="padding-top: 10pt;">
+        All participants receive the same instructions. 
+        During the experiment you are not allowed to use other software or open other windows on your screen. 
+        Please turn off your mobile phones now.
+        It can happen that you have to wait during this experiment. 
+        Please wait patiently and do not use other software or open other windows. 
+    </p>
+    <p style="padding-top: 10pt;">
+        Please answer every page and click "Next" button in time. If you fail to do so, then your payment will be decreased 
+        according to the number of your timeouts. The more timeouts you had, the lower your payment you will get after completing the experiment.
+        If you time out more than three times you will be marked as a drop-out and lose the opportunity to earn more than the show-up reward.
+    </p>
+    <p style="padding-top: 10pt;" class="alert alert-success">
+        <strong>If you are ready to begin, please click on the “Next” button.</strong>
+    </p>
+
+    {% next_button %}
+
+{% endblock %}

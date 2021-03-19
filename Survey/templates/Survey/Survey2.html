@@ -1,0 +1,35 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Survey 6/8
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 1</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+    <div class="alert alert-info">
+        <p>
+            For the following questions, please choose which statement best fits your description or your opinion.
+        </p>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <strong>Question 1</strong>
+        {% formfield player.survey_2_1 label="" %}
+        <strong>Question 2</strong>
+        {% formfield player.survey_2_2 label="" %}
+        <strong>Question 3</strong>
+        {% formfield player.survey_2_3 label="" %}
+        <strong>Question 4</strong>
+        {% formfield player.survey_2_4 label="" %}
+        <strong>Question 5</strong>
+        {% formfield player.survey_2_5 label="" %}
+    </div>
+
+
+    {% next_button %}
+
+{% endblock %}

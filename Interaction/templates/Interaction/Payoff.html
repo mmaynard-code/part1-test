@@ -1,0 +1,21 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    This is the end of the experiment. Thank you for participating!
+{% endblock %}
+
+{% block content %}
+
+
+    <p>
+        {% if drop_out < 4 %}
+            Your final reward includes:<br>
+            <strong>{{ my_payoff }} + show-up reward + completion reward</strong><br>
+
+        {% else %}
+            <strong>Because you have been marked as drop-out player, you have only recieved the show-up reward.</strong>
+        {% endif %}
+    </p>
+
+{% endblock %}

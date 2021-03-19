@@ -1,0 +1,51 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Survey 4/8
+{% endblock %}
+
+{% block content %}
+<style>
+    #volume {
+    width: 150%;
+    }
+</style>
+<div style="text-align: center;">Section 1</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 27%" aria-valuenow="27" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+    <div class="alert alert-info">
+        <p>
+            We would like to hear your opinion in some different issues. 
+            Think carefully about these issues and please give us an answer that describes your true opinion. 
+            There are no good or bad answers.
+            All issues are measured on a scale from 0 to 100.
+            It is very important that you express your true opinion about these issues. 
+            Please tell us also how important (very important, important, unimportant, very unimportant) these issues are for you 
+            and how sure are you (very sure, sure, unsure, very unsure) about your opinion. 
+        </p>
+    </div>
+
+    <div style="margin-top: 10px;">
+        <p>1. Please give your opinion on this issue:</p>
+        <div class="input-group" data-slider="">
+            <input type="range" name="survey_1_4a" min="0" max="100" step="1" id="volume">    
+            <div>
+                Current value: <strong><span data-slider-value="">0</span></strong>
+            </div>
+        </div><br>
+        <p style="text-align: center; font-size: large;">
+            <strong>"The government of your country has to divide an available budget between two options: 
+                building new highways or new high-speed railway tracks. 
+                [0…100] percent of these resources should be used to build new high-speed railway tracks."</strong>
+        </p>
+     
+        {% formfield player.survey_1_4b %}
+        {% formfield player.survey_1_4c %}
+    </div>
+
+
+    {% next_button %}
+
+{% endblock %}

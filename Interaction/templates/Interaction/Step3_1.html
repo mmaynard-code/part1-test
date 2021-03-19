@@ -1,0 +1,142 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Match other persons
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 2: Round {{ player.round_number }}</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+
+<style>
+    table, td, th {
+    border: 1px solid black;
+    height:30pt;
+    padding: 15pt;
+    vertical-align:text-top;
+    }
+
+    .td {width: 315px;}
+    
+    table {
+    border-collapse: collapse;
+    margin:auto;
+    }
+
+    #volume {
+    width: 80%;
+    }
+
+    .input-group-append {
+        width: 30px;
+        padding-left: 10px;
+    }
+</style>
+
+    
+    <p><strong>You are matched with 3 persons.</strong></p>
+    
+    <table>
+        <tr>
+            <td class = "td">
+                <h3>Person 1: {{ p1_name }} </h3><br>
+                <table>
+                    <tr>
+                        <p>
+                            <strong style="color: red;">This {{ same_p1 }} the same participant</strong> 
+                            you received information about on the previous screen.
+                        </p>
+                        <p style="padding-top: 10pt;">
+                            The opinion of this person on the selected issue:<br> "{{ issue }}" <br> is <strong style="color: green">{{ p1_answer }}</strong>
+                        </p>
+                        <div class="alert alert-success" >
+                            <p><strong>How likeable do you consider this person?</strong></p>
+                            <p>Please rate how likeable you find this person from -50 (not likable at all)
+                        to +50 (very much likable). A zero rating could be interpreted as a neutral position.</p>
+                            <div class="input-group" data-slider="">
+                                <input type="range" name="likability_step3_1_1" min="-50" max="50" step="1" value="{{ like1 }}" id="volume">    
+                                <div class="input-group-append">
+                                    <span data-slider-value="">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                </table>
+            </td>
+            <td class = "td">
+                <h3>Person 2: {{ p2_name }} </h3><br>
+                <table>
+                    <tr>
+                        <p>
+                            <strong style="color: red;">This {{ same_p2 }} the same participant</strong> 
+                            you received information about on the previous screen
+                        </p>
+                        <p style="padding-top: 10pt;">
+                            The opinion of this person on the selected issue:<br> "{{ issue }}" <br> is <strong style="color: green">{{ p2_answer }}</strong>
+                        </p>
+                        <div class="alert alert-success" >
+                            <p><strong>How likeable do you consider this person?</strong></p>
+                            <p>Please rate how likeable you find this person from -50 (not likable at all)
+                        to +50 (very much likable). A zero rating could be interpreted as a neutral position.</p>
+                            <div class="input-group" data-slider="">
+                                <input type="range" name="likability_step3_1_2" min="-50" max="50" step="1" value="{{ like2 }}" id="volume">    
+                                <div class="input-group-append">
+                                    <span data-slider-value="">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                </table>
+            </td>
+            <td class = "td">
+                <h3>Person 3: {{ p3_name }} </h3><br>
+                <table>
+                    <tr>
+                        <p>
+                            <strong style="color: red;">This {{ same_p3 }} the same participant</strong> 
+                            you received information about on the previous screen
+                        </p>
+                        <p style="padding-top: 10pt;">
+                            The opinion of this person on the selected issue:<br> "{{ issue }}" <br> is <strong style="color: green">{{ p3_answer }}</strong>
+                        </p>
+                        <div class="alert alert-success" >
+                            <p><strong>How likeable do you consider this person?</strong></p>
+                            <p>Please rate how likeable you find this person from -50 (not likable at all)
+                        to +50 (very much likable). A zero rating could be interpreted as a neutral position.</p>
+                            <div class="input-group" data-slider="">
+                                <input type="range" name="likability_step3_1_3" min="-50" max="50" step="1" value="{{ like3 }}" id="volume">    
+                                <div class="input-group-append">
+                                    <span data-slider-value="">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table><br>
+
+    
+    <div style="padding-top: 15pt;" class="alert alert-info">
+        <p><strong>Last time, you indicated that your opinion on this issue is: <strong style="color: green;">{{ my_answer }}</strong>. 
+            <br>We would like to hear your opinion in this issue again:</strong></p> 
+    
+        Think carefully about this issue and please give us an answer that describes your true opinion. There are no good or bad answers.
+        The issue is measured on a scale from 0 till 100. It is very important that you express your true opinion about this issue.
+        <br><br><strong>
+        {{ issue }}<br>
+        <div class="input-group" data-slider="">
+            <input type="range" name="re_issue_step3_1" min="0" max="100" step="1" value="{{ my_answer }}" id="volume">    
+            <div class="input-group-append">
+                <span data-slider-value="">50</span>
+            </div>
+        </div>
+    </strong>
+    </div>
+
+    {% next_button %}
+
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    Send messages
+{% endblock %}
+
+{% block content %}
+<div style="text-align: center;">Section 2: Round {{ player.round_number }}</div>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 44%" aria-valuenow="44" aria-valuemin="0" aria-valuemax="100"></div>
+</div><br>
+
+    <style>
+        table, td, th {
+        border: 1px solid black;
+        height:30pt;
+        padding: 15pt;
+        vertical-align:text-top;
+        }
+
+        .td {width: 315px;}
+        
+        table {
+        border-collapse: collapse;
+        margin:auto;
+        }
+    </style>
+
+    <p><strong>You can now communicate with them again.</strong></p>
+
+    <table>
+        <tr>
+            <td class = "td">
+                <h3>Person 1: {{ p1_name }} </h3><br>
+                <p>The opinion of this person on the selected issue is <strong style="color: green;">{{ p1_answer }}</strong> </p>
+                <p>
+                    <strong>You can select the message below that you would like to send:</strong><br>  
+                    (You have to select one message even if none of them makes sense to you now.)
+                </p>
+                <p style="text-align: center;">
+                    "My opinion on this issue is {{ my_answer }}. " + 
+                    {% formfield player.message_step2_2_1 label="" %}
+                </p>
+            </td>
+            {% if num_p != 1 %}
+            <td class = "td">
+                <h3>Person 2: {{ p2_name }} </h3><br>
+                <p>The opinion of this person on the selected issue is <strong style="color: green;">{{ p2_answer }}</strong> </p>
+                <p>
+                    <strong>You can select the message below that you would like to send:</strong><br> 
+                    (You have to select one message even if none of them makes sense to you now.)
+                </p>
+                <p style="text-align: center;">
+                    "My opinion on this issue is {{ my_answer }}. " + 
+                    {% formfield player.message_step2_2_2 label="" %}
+                </p>
+            </td>
+            {% endif %}
+            {% if num_p == 3 %}
+            <td class = "td">
+                <h3>Person 3: {{ p3_name }} </h3><br>
+                <p>The opinion of this person on the selected issue is <strong style="color: green;">{{ p3_answer }}</strong> </p>
+                <p>
+                    <strong>You can select the message below that you would like to send:</strong><br> 
+                    (You have to select one message even if none of them makes sense to you now.)
+                </p>
+                <p style="text-align: center;">
+                    "My opinion on this issue is {{ my_answer }}. " + 
+                    {% formfield player.message_step2_2_3 label="" %}
+                </p>
+            </td>
+            {% endif %}
+        </tr>
+    </table>
+
+    {% next_button %}
+
+{% endblock %}
